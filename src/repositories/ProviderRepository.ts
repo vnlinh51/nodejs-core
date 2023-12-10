@@ -1,43 +1,43 @@
 import { Inject, Service } from 'typedi';
-import { DataSource, In } from 'typeorm';
+import { DataSource } from 'typeorm';
 import winston from 'winston';
 
 import { Logger } from '@Decorators/Logger';
 
-import { Book } from '@Entities/Book';
+import { Provider } from '@Entities/Provider';
 
 import { BaseOrmRepository } from '@Repositories/BaseOrmRepository';
 
 @Service()
-export class BookRepository extends BaseOrmRepository<Book> {
+export class ProviderRepository extends BaseOrmRepository<Provider> {
   constructor(
     @Logger(module) private logger: winston.Logger,
     @Inject('dataSource') private dataSource: DataSource,
   ) {
-    super(dataSource, Book);
+    super(dataSource, Provider);
   }
 
-  async create(book: Book) {
-    return await this.repo.save(book);
+  async create(provider: Provider) {
+    return await this.repo.save(provider);
+  }
+
+  async findOne(id: number) {
+    return await this.repo.findOne({ where: { id } });
   }
 
   async findById(id: number){
     return this.repo.findOneBy({ id });
   }
 
-  async partialUpdate(id: number, book: Partial<Book>){
+  async partialUpdate(id: number, provider: Partial<Provider>){
     return this.repo.createQueryBuilder()
-      .update(book)
+      .update(provider)
       .where({ id })
-      .returning(['id', 'name', 'author', 'provider'])
+      .returning(['id', 'name', 'description'])
       .execute();
   }
 
   async delete(id: number) {
     return this.repo.delete({ id });
-  }
-
-  async findByIds(ids: number[]) {
-    return this.repo.find({ where: { id: In(ids) } });
   }
 }

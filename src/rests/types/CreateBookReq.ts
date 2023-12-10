@@ -6,4 +6,8 @@ export class CreateBookReq {
 
   @IsNumber()
   idAuthor: number;
+
+  @IsNumber()
+  @IsOptional()
+  idProvider?: number;
 }

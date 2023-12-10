@@ -1,4 +1,4 @@
-import { Authorized, Body, Delete, Get, HttpCode, JsonController, OnUndefined, Params, Patch, Post, QueryParam, QueryParams } from 'routing-controllers';
+import { Authorized, Body, Delete, Get, HttpCode, JsonController, OnUndefined, Params, Patch, Post } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import winston from 'winston';
 import { IsEnum } from 'class-validator';

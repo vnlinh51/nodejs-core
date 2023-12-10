@@ -4,7 +4,7 @@ import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn, ManyToOne, ManyT
 import { Type } from 'class-transformer';
 
 import { Author } from '@Entities/Author';
-import { Provider } from '@Entities/Providers';
+import { Provider } from '@Entities/Provider';
 
 @Entity({
   name: 'book',
@@ -25,9 +25,9 @@ export class Book {
   @Type(() => Author)
   author: Author;
 
-  // @OneToMany(() => Provider, (provider) => provider.id, { onDelete : 'SET NULL' })
-  // @IsArray()
-  // @ValidateNested()
-  // @Type(() => Provider)
-  // providers: Provider[];
+  @ManyToOne(() => Provider, (provider) => provider.id, { onDelete : 'SET NULL', nullable: true })
+  @IsObject()
+  @ValidateNested()
+  @Type(() => Provider)
+  provider: Provider;
 }

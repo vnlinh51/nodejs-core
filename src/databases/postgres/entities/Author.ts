@@ -10,7 +10,7 @@ import { Book } from './Book';
 })
 
 export class Author {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   @IsNumber()
   id: number;
 
