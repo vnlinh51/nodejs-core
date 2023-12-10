@@ -8,7 +8,9 @@ import { Book } from '@Entities/Book';
 import { BookRepository } from '@Repositories/BookRepository';
 import { AuthorRepository } from '@Repositories/AuthorRepository';
 
-import { CreateBookInput } from './types/CreateBookInput';
+import { UpdateBookReq } from '@Rests/types/UpdateBookReq';
+
+import { CreateBookInput  } from './types/CreateBookInput';
 
 @Service()
 export class BookService {
@@ -33,5 +35,18 @@ export class BookService {
     book.author = author;
 
     return await this.bookRepo.create(book);
+  }
+
+  public async getBookById(id: number) {
+    return this.bookRepo.findById(id);
+  }
+
+  public async partialUpdate(id: number, book: UpdateBookReq) {
+    const updated = await this.bookRepo.partialUpdate(id, book);
+    return updated?.raw?.[0];
+  }
+
+  public async delete(id: number) {
+    return this.bookRepo.delete(id);
   }
 }

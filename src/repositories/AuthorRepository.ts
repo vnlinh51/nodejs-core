@@ -24,4 +24,20 @@ export class AuthorRepository extends BaseOrmRepository<Author> {
   async findOne(id: number) {
     return await this.repo.findOne({ where: { id } });
   }
+
+  async findById(id: number){
+    return this.repo.findOneBy({ id });
+  }
+
+  async partialUpdate(id: number, author: DeepPartial<Author>){
+    return this.repo.createQueryBuilder()
+      .update(author)
+      .where({ id })
+      .returning(['id', 'name'])
+      .execute();
+  }
+
+  async delete(id: number) {
+    return this.repo.delete({ id });
+  }
 }

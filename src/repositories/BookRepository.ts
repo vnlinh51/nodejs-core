@@ -1,5 +1,5 @@
 import { Inject, Service } from 'typedi';
-import { DataSource, DeepPartial, Repository } from 'typeorm';
+import { DataSource, DeepPartial } from 'typeorm';
 import winston from 'winston';
 
 import { Logger } from '@Decorators/Logger';
@@ -19,5 +19,21 @@ export class BookRepository extends BaseOrmRepository<Book> {
 
   async create(book: Book) {
     return await this.repo.save(book);
+  }
+
+  async findById(id: number){
+    return this.repo.findOneBy({ id });
+  }
+
+  async partialUpdate(id: number, book: DeepPartial<Book>){
+    return this.repo.createQueryBuilder()
+      .update(book)
+      .where({ id })
+      .returning(['id', 'name', 'author'])
+      .execute();
+  }
+
+  async delete(id: number) {
+    return this.repo.delete({ id });
   }
 }
