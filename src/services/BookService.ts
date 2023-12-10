@@ -16,6 +16,7 @@ import { ProviderRepository } from '@Repositories/ProviderRepository';
 
 import { CreateBookInput  } from '@Services/types/CreateBookInput';
 import { UpdateBookInput } from '@Services/types/UpdateBookInput';
+import { FilterBookInput } from '@Services/types/FilterBookInput';
 
 @Service()
 export class BookService {
@@ -86,5 +87,9 @@ export class BookService {
 
   public async delete(id: number) {
     return this.bookRepo.delete(id);
+  }
+
+  async findAll(query: FilterBookInput) {
+    return await this.bookRepo.findAll(query);
   }
 }

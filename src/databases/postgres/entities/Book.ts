@@ -1,6 +1,6 @@
-import { IsArray, IsNumber, IsObject, IsString, ValidateNested } from 'class-validator';
+import { IsArray, IsDate, IsNumber, IsObject, IsString, ValidateNested } from 'class-validator';
 import { Field, Int, ObjectType } from 'type-graphql';
-import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn, ManyToOne, ManyToMany, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn, ManyToOne, ManyToMany, OneToMany, CreateDateColumn } from 'typeorm';
 import { Type } from 'class-transformer';
 
 import { Author } from '@Entities/Author';
@@ -30,4 +30,9 @@ export class Book {
   @ValidateNested()
   @Type(() => Provider)
   provider: Provider;
+
+  @CreateDateColumn()
+  @IsDate()
+  createdAt: Date;
 }
+

@@ -1,7 +1,6 @@
-import { Authorized, Body, Delete, Get, HttpCode, JsonController, OnUndefined, Params, Patch, Post } from 'routing-controllers';
+import { Authorized, Body, Delete, Get, HttpCode, JsonController, OnNull, OnUndefined, Params, Patch, Post, QueryParams } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import winston from 'winston';
-import { IsEnum } from 'class-validator';
 import { Service } from 'typedi';
 
 import { Logger } from '@Decorators/Logger';
@@ -13,6 +12,8 @@ import { BookService } from '@Services/BookService';
 import { CreateBookReq } from '@Rests/types/CreateBookReq';
 import { IdPathParams } from '@Rests/types/IdPathParams';
 import { UpdateBookReq } from '@Rests/types/UpdateBookReq';
+import { BookPaginationRes } from '@Rests/types/BookPaginationRes';
+import { FilterBookReq } from '@Rests/types/FilterBookReq';
 
 @Service()
 @JsonController('/books')
@@ -55,5 +56,19 @@ export class BookController {
   public async delete(@Params() params: IdPathParams) {
     await this.bookService.delete(params.id);
     return;
+  }
+
+  @Get('')
+  @OnUndefined(204)
+  @OnNull(404)
+  @ResponseSchema(BookPaginationRes, { statusCode: 200 })
+  async findAll(@QueryParams() query: FilterBookReq) {
+    const res = await this.bookService.findAll(query);
+    const response = new BookPaginationRes()
+      .withItems(res.items)
+      .withPage(query.page)
+      .withSize(query.size)
+      .withTotal(res.count);
+    return response;
   }
 }
